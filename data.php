@@ -15,7 +15,7 @@ $data_arr[] = (object)[
     "sipiax" => "4",
     "buycost" => "",
     "sessionbill" => "4",
-    "margin" => "4",
+    "margin" => "40",
     "markup" => "4",
     "id" => "4",
 ];

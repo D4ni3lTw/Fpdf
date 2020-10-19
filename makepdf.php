@@ -5,7 +5,7 @@ class createPDF extends FPDF
 	// Load data
 	function LoadData()
 	{
-		// Read file lines
+		// Read files lines
 		$data_array = array();
 		$sizeArray = array();
 		$header = array();
@@ -21,7 +21,7 @@ class createPDF extends FPDF
 			break;
 		}
 
-		// Data
+		// Datas
 		foreach ($data_arr as $row) {
 			$data = array();
 			$i = 0;
