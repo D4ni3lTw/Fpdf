@@ -2,68 +2,69 @@
 require('./fpdf.php');
 class createPDF extends FPDF
 {
-	// Load header, table data, collumn size
-	function LoadData($data_arr)
+	// Load data
+	function LoadData()
 	{
 		// Read file lines
-		$dat = array();
 		$data_array = array();
-		$header = array();
 		$sizeArray = array();
-		
+		$header = array();
+		include("data.php");
+
+		// Header
 		foreach ($data_arr as $row) {
 			foreach ($row as $key => $value) {
-				array_push($header, $key);
-				$size = 2 * strlen($key) + 7;
+				$size = 2 * strlen($key) + 1;
 				array_push($sizeArray, $size);
+				array_push($header, $key);
 			}
 			break;
 		}
+
+		// Data
 		foreach ($data_arr as $row) {
 			$data = array();
 			$i = 0;
 			foreach ($row as $key => $value) {
-				array_push($data, $value);
 				$size = 2 * strlen($value) + 1;
 				$sizeArray[$i] = $size >= $sizeArray[$i] ? $size : $sizeArray[$i];
 				$i++;
+				array_push($data, $value);
 			}
 			array_push($data_array, $data);
 		}
-		array_push($dat, $header);
-		array_push($dat, $data_array);
-		array_push($dat, $sizeArray);
-		return $dat;
+
+
+		$result = array();
+		array_push($result, $header);
+		array_push($result, $data_array);
+		array_push($result, $sizeArray);
+		return $result;
 	}
+
 	// Simple table
 	function BasicTable($header, $data, $sizeArray)
 	{
-		// Header
+
 		$i = 0;
-		$this->SetFont('Times', 'B', 10);
 		foreach ($header as $col) {
-			$col = strtoupper($col);
 			$this->Cell($sizeArray[$i++], 7, $col, 1, 0, 'C');
 			//array_push($sizeArray, $size);
 		}
 		$this->Ln();
 		// Data
-		$this->SetFont('Times', '', 10);
 		foreach ($data as $row) {
 			$i = 0;
 			foreach ($row as $col) {
-				$this->Cell($sizeArray[$i++], 6, $col, 1, 0, 'C');
+				$this->Cell($sizeArray[$i++], 6, $col, 1, 0, 'R');
 			}
 			$this->Ln();
 		}
 	}
 }
 $pdf = new createPDF();
-// Column headings
-// $header = $pdf->LoadHeader();
-// Data loading
-include("data.php");
-$data = $pdf->LoadData($data_arr);
+$data = $pdf->LoadData();
+$pdf->SetFont('Times', '', 10);
 $pdf->AddPage('L');
 $pdf->BasicTable($data[0], $data[1], $data[2]);
 $pdf->Output('myFile.pdf', 'F');
