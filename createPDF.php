@@ -60,7 +60,7 @@ class createPDF extends FPDF
 }
 $pdf = new createPDF();
 // Column headings
-// $header = $pdf->LoadHeader();
+
 // Data loading
 include("data.php");
 $data = $pdf->LoadData($data_arr);
